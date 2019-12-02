@@ -40,7 +40,28 @@ def compute(memory):
 
     return memory
 
-print(compute(gravity_assist_dirty))
+def brute_force(memory):
+    #goal = 3516593
+    goal = 19690720
+
+    for noun in range(0,100):
+        for verb in range(0,100):
+
+            # Copying the program memory is crucial for integrity
+            cur_mem_start = list(memory)
+
+            # Rewrite indices
+            cur_mem_start[1] = noun
+            cur_mem_start[2] = verb
+
+            # Compute and check for goal
+            cur_mem = compute(cur_mem_start)
+            if cur_mem[0] == goal:
+                return 100*noun + verb
+
+print(brute_force(gravity_assist_clear))
+
+#print(compute(gravity_assist_dirty))
 #print(compute(test_mul))
 
 
