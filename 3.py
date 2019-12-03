@@ -80,7 +80,10 @@ for cur_path in paths:
 
         end = Point(pos.x, pos.y)
         edges.append([start, end])
-#
+
+
+
+# Get a feeling of what we are doing here:
 
 
 def print_birdseyeview(view_grid=True):
@@ -93,9 +96,12 @@ def print_birdseyeview(view_grid=True):
             print(edge)
 
 
-# Get a feeling of what we are doing here:
+# Debug code
 #print_birdseyeview()
 #print_birdseyeview(view_grid=False)
+
+
+# Find intersections
 
 
 def find_intersections():
@@ -108,27 +114,6 @@ def find_intersections():
 
 find_intersections()
 
-
-
-
-# Find intersections
-
-
-def taxi_distance(p1, p2):
-    ''' Returns \sum_{i=1}^{n} |p_i - q_i|'''
-
-    dim = 2
-    sum = 0
-
-    for d in range(dim):
-        sum += abs(p1[d] - p2[d])
-
-    return sum
-
-
-# project on coordinate axes and sum:
-#
-#
 
 # tests:
 
