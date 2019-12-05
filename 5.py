@@ -76,6 +76,7 @@ def compute(memory, input=1):
         opcode, p1mode, p2mode, p3mode = explode(memory, instruction_pointer)
         print(f"IP: {instruction_pointer} \t instruction: {memory[instruction_pointer]} \t opcode: {opcode}")
 
+
         # add
         if opcode == 1:
             left_hand = memory[memory[instruction_pointer + 1]] if p1mode == 0 else memory[instruction_pointer + 1]
@@ -102,9 +103,66 @@ def compute(memory, input=1):
             print(f"Output: {print_output} in mode: {p1mode}")
             instruction_pointer += 2
 
+        # jump if true
+        # if 1st param is non-zero it sets instruction_pointer to the value of the 2nd param
+        if opcode == 5:
+            left_hand = memory[memory[instruction_pointer + 1]] if p1mode == 0 else memory[instruction_pointer + 1]
+            right_hand = memory[memory[instruction_pointer + 2]] if p2mode == 0 else memory[instruction_pointer + 2]
+            if left_hand != 0:
+                instruction_pointer = right_hand
+            else:
+                instruction_pointer += 3
+
+        # jump if false
+        # if 1st param is zero it sets instruction_pointer to the value of the 2nd param
+        if opcode == 6:
+            left_hand = memory[memory[instruction_pointer + 1]] if p1mode == 0 else memory[instruction_pointer + 1]
+            right_hand = memory[memory[instruction_pointer + 2]] if p2mode == 0 else memory[instruction_pointer + 2]
+            if left_hand == 0:
+                instruction_pointer = right_hand
+            else:
+                instruction_pointer += 3
+
+        # jump if less
+        # if 1st param is less then 2nd param it stores 1 in position of 3rd param, else 0
+        if opcode == 7:
+            left_hand = memory[memory[instruction_pointer + 1]] if p1mode == 0 else memory[instruction_pointer + 1]
+            right_hand = memory[memory[instruction_pointer + 2]] if p2mode == 0 else memory[instruction_pointer + 2]
+            if left_hand < right_hand:
+                memory[memory[instruction_pointer + 3]] = 1
+            else:
+                memory[memory[instruction_pointer + 3]] = 0
+            instruction_pointer += 4
+
+        # equals
+        # if 1st param is equal to the 2nd param it stores 1 in position of 3rd param, else 0
+        if opcode == 8:
+            left_hand = memory[memory[instruction_pointer + 1]] if p1mode == 0 else memory[instruction_pointer + 1]
+            right_hand = memory[memory[instruction_pointer + 2]] if p2mode == 0 else memory[instruction_pointer + 2]
+            if left_hand == right_hand:
+                memory[memory[instruction_pointer + 3]] = 1
+            else:
+                memory[memory[instruction_pointer + 3]] = 0
+            instruction_pointer += 4
+
         # go to next instruction
 
-compute(test_program)
+# part 2
+compute(test_program, 5)
+
+# Tests for part 2
+
+# compares
+#compute([3,9,8,9,10,9,4,9,99,-1,8], 8)
+#compute([3,9,7,9,10,9,4,9,99,-1,8], 7)
+#compute([3,3,1108,-1,8,3,4,3,99], 8)
+
+# jumps
+#compute([3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9], 12345)
+#compute([3,3,1105,-1,9,1101,0,0,12,4,12,99,1], 3)
+
+# all-in-all test
+#compute([3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], 8)
 
 
 # Tests:
